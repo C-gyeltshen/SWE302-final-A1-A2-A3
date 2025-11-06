@@ -1,5 +1,6 @@
-import articleListReducer from "./articleList";
-import {
+const { test, expect } = require('@playwright/test');
+const articleListReducer = require('../../src/reducers/articleList').default;
+const {
   ARTICLE_FAVORITED,
   ARTICLE_UNFAVORITED,
   SET_PAGE,
@@ -11,15 +12,15 @@ import {
   PROFILE_PAGE_UNLOADED,
   PROFILE_FAVORITES_PAGE_LOADED,
   PROFILE_FAVORITES_PAGE_UNLOADED,
-} from "../constants/actionTypes";
+} = require('../../src/constants/actionTypes');
 
-describe("articleList reducer", () => {
-  it("should return initial state", () => {
+test.describe("articleList reducer", () => {
+  test("should return initial state", () => {
     expect(articleListReducer(undefined, {})).toEqual({});
   });
 
-  describe("ARTICLE_FAVORITED action", () => {
-    it("should update favorited article in list", () => {
+  test.describe("ARTICLE_FAVORITED action", () => {
+    test("should update favorited article in list", () => {
       const articles = [
         { slug: "article-1", favorited: false, favoritesCount: 5 },
         { slug: "article-2", favorited: false, favoritesCount: 10 },
@@ -38,7 +39,7 @@ describe("articleList reducer", () => {
       expect(result.articles[2].favorited).toBe(false);
     });
 
-    it("should not modify other articles", () => {
+    test("should not modify other articles", () => {
       const articles = [
         {
           slug: "article-1",
@@ -65,8 +66,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("ARTICLE_UNFAVORITED action", () => {
-    it("should update unfavorited article in list", () => {
+  test.describe("ARTICLE_UNFAVORITED action", () => {
+    test("should update unfavorited article in list", () => {
       const articles = [
         { slug: "article-1", favorited: true, favoritesCount: 5 },
         { slug: "article-2", favorited: true, favoritesCount: 10 },
@@ -84,8 +85,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("SET_PAGE action", () => {
-    it("should set page with articles", () => {
+  test.describe("SET_PAGE action", () => {
+    test("should set page with articles", () => {
       const articles = [
         { slug: "article-1", title: "Article 1" },
         { slug: "article-2", title: "Article 2" },
@@ -101,7 +102,7 @@ describe("articleList reducer", () => {
       expect(result.currentPage).toBe(2);
     });
 
-    it("should update current page", () => {
+    test("should update current page", () => {
       const currentState = {
         articles: [{ slug: "old" }],
         currentPage: 0,
@@ -117,13 +118,13 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("APPLY_TAG_FILTER action", () => {
-    it("should apply tag filter and reset page", () => {
+  test.describe("APPLY_TAG_FILTER action", () => {
+    test("should apply tag filter and reset page", () => {
       const articles = [{ slug: "filtered-article", tagList: ["react"] }];
       const action = {
         type: APPLY_TAG_FILTER,
         payload: { articles, articlesCount: 5 },
-        pager: jest.fn(),
+        pager: () => {},
         tag: "react",
       };
       const result = articleListReducer({}, action);
@@ -134,12 +135,12 @@ describe("articleList reducer", () => {
       expect(result.currentPage).toBe(0);
     });
 
-    it("should clear previous tab when filtering by tag", () => {
+    test("should clear previous tab when filtering by tag", () => {
       const currentState = { tab: "feed", tag: null };
       const action = {
         type: APPLY_TAG_FILTER,
         payload: { articles: [], articlesCount: 0 },
-        pager: jest.fn(),
+        pager: () => {},
         tag: "javascript",
       };
       const result = articleListReducer(currentState, action);
@@ -148,8 +149,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("HOME_PAGE_LOADED action", () => {
-    it("should load home page with tags and articles", () => {
+  test.describe("HOME_PAGE_LOADED action", () => {
+    test("should load home page with tags and articles", () => {
       const tags = ["react", "javascript", "nodejs"];
       const articles = [
         { slug: "article-1", title: "Article 1" },
@@ -158,7 +159,7 @@ describe("articleList reducer", () => {
       const action = {
         type: HOME_PAGE_LOADED,
         payload: [{ tags }, { articles, articlesCount: 10 }],
-        pager: jest.fn(),
+        pager: () => {},
         tab: "all",
       };
       const result = articleListReducer({}, action);
@@ -169,11 +170,11 @@ describe("articleList reducer", () => {
       expect(result.tab).toBe("all");
     });
 
-    it("should handle empty payload", () => {
+    test("should handle empty payload", () => {
       const action = {
         type: HOME_PAGE_LOADED,
         payload: null,
-        pager: jest.fn(),
+        pager: () => {},
         tab: "all",
       };
       const result = articleListReducer({}, action);
@@ -182,12 +183,12 @@ describe("articleList reducer", () => {
       expect(result.articlesCount).toBe(0);
     });
 
-    it("should handle missing tags in payload", () => {
+    test("should handle missing tags in payload", () => {
       const articles = [{ slug: "article-1" }];
       const action = {
         type: HOME_PAGE_LOADED,
         payload: [null, { articles, articlesCount: 5 }],
-        pager: jest.fn(),
+        pager: () => {},
         tab: "all",
       };
       const result = articleListReducer({}, action);
@@ -196,8 +197,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("HOME_PAGE_UNLOADED action", () => {
-    it("should reset state when home page unloaded", () => {
+  test.describe("HOME_PAGE_UNLOADED action", () => {
+    test("should reset state when home page unloaded", () => {
       const currentState = {
         tags: ["react", "javascript"],
         articles: [{ slug: "article-1" }],
@@ -212,13 +213,13 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("CHANGE_TAB action", () => {
-    it("should change tab and load articles", () => {
+  test.describe("CHANGE_TAB action", () => {
+    test("should change tab and load articles", () => {
       const articles = [{ slug: "feed-article" }];
       const action = {
         type: CHANGE_TAB,
         payload: { articles, articlesCount: 15 },
-        pager: jest.fn(),
+        pager: () => {},
         tab: "feed",
       };
       const result = articleListReducer({}, action);
@@ -229,12 +230,12 @@ describe("articleList reducer", () => {
       expect(result.tag).toBe(null);
     });
 
-    it("should clear tag when changing tab", () => {
+    test("should clear tag when changing tab", () => {
       const currentState = { tag: "react", tab: "all" };
       const action = {
         type: CHANGE_TAB,
         payload: { articles: [], articlesCount: 0 },
-        pager: jest.fn(),
+        pager: () => {},
         tab: "feed",
       };
       const result = articleListReducer(currentState, action);
@@ -242,8 +243,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("PROFILE_PAGE_LOADED action", () => {
-    it("should load profile page with articles", () => {
+  test.describe("PROFILE_PAGE_LOADED action", () => {
+    test("should load profile page with articles", () => {
       const profile = { username: "testuser", bio: "Test bio" };
       const articles = [
         { slug: "user-article-1", title: "User Article 1" },
@@ -252,7 +253,7 @@ describe("articleList reducer", () => {
       const action = {
         type: PROFILE_PAGE_LOADED,
         payload: [{ profile }, { articles, articlesCount: 8 }],
-        pager: jest.fn(),
+        pager: () => {},
       };
       const result = articleListReducer({}, action);
       expect(result.articles).toEqual(articles);
@@ -261,14 +262,14 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("PROFILE_FAVORITES_PAGE_LOADED action", () => {
-    it("should load favorited articles", () => {
+  test.describe("PROFILE_FAVORITES_PAGE_LOADED action", () => {
+    test("should load favorited articles", () => {
       const profile = { username: "testuser" };
       const articles = [{ slug: "favorited-article", favorited: true }];
       const action = {
         type: PROFILE_FAVORITES_PAGE_LOADED,
         payload: [{ profile }, { articles, articlesCount: 3 }],
-        pager: jest.fn(),
+        pager: () => {},
       };
       const result = articleListReducer({}, action);
       expect(result.articles).toEqual(articles);
@@ -277,8 +278,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("PROFILE_PAGE_UNLOADED action", () => {
-    it("should reset state when profile page unloaded", () => {
+  test.describe("PROFILE_PAGE_UNLOADED action", () => {
+    test("should reset state when profile page unloaded", () => {
       const currentState = {
         articles: [{ slug: "user-article" }],
         articlesCount: 5,
@@ -290,8 +291,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("PROFILE_FAVORITES_PAGE_UNLOADED action", () => {
-    it("should reset state when profile favorites page unloaded", () => {
+  test.describe("PROFILE_FAVORITES_PAGE_UNLOADED action", () => {
+    test("should reset state when profile favorites page unloaded", () => {
       const currentState = {
         articles: [{ slug: "favorited-article" }],
         articlesCount: 3,
@@ -303,8 +304,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original articles array on ARTICLE_FAVORITED", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original articles array on ARTICLE_FAVORITED", () => {
       const originalArticles = [
         { slug: "article-1", favorited: false, favoritesCount: 5 },
       ];
@@ -321,8 +322,8 @@ describe("articleList reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action", () => {
       const currentState = { articles: [{ slug: "test" }], articlesCount: 1 };
       const action = { type: "UNKNOWN_ACTION" };
       const result = articleListReducer(currentState, action);

@@ -1,5 +1,6 @@
-import editorReducer from "./editor";
-import {
+const { test, expect } = require('@playwright/test');
+const editorReducer = require('../../src/reducers/editor').default;
+const {
   EDITOR_PAGE_LOADED,
   EDITOR_PAGE_UNLOADED,
   ARTICLE_SUBMITTED,
@@ -7,15 +8,15 @@ import {
   ADD_TAG,
   REMOVE_TAG,
   UPDATE_FIELD_EDITOR,
-} from "../constants/actionTypes";
+} = require('../../src/constants/actionTypes');
 
-describe("editor reducer", () => {
-  it("should return initial state", () => {
+test.describe("editor reducer", () => {
+  test("should return initial state", () => {
     expect(editorReducer(undefined, {})).toEqual({});
   });
 
-  describe("EDITOR_PAGE_LOADED action", () => {
-    it("should load article for editing", () => {
+  test.describe("EDITOR_PAGE_LOADED action", () => {
+    test("should load article for editing", () => {
       const article = {
         slug: "test-article",
         title: "Test Article",
@@ -38,7 +39,7 @@ describe("editor reducer", () => {
       });
     });
 
-    it("should initialize empty form for new article", () => {
+    test("should initialize empty form for new article", () => {
       const action = {
         type: EDITOR_PAGE_LOADED,
         payload: null,
@@ -54,7 +55,7 @@ describe("editor reducer", () => {
       });
     });
 
-    it("should handle missing tagList", () => {
+    test("should handle missing tagList", () => {
       const article = {
         slug: "test",
         title: "Test",
@@ -70,8 +71,8 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("EDITOR_PAGE_UNLOADED action", () => {
-    it("should reset state when editor page unloaded", () => {
+  test.describe("EDITOR_PAGE_UNLOADED action", () => {
+    test("should reset state when editor page unloaded", () => {
       const currentState = {
         title: "My Article",
         description: "Article description",
@@ -85,8 +86,8 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("ARTICLE_SUBMITTED action", () => {
-    it("should clear inProgress and errors on success", () => {
+  test.describe("ARTICLE_SUBMITTED action", () => {
+    test("should clear inProgress and errors on success", () => {
       const currentState = { inProgress: true, title: "Test" };
       const action = {
         type: ARTICLE_SUBMITTED,
@@ -98,7 +99,7 @@ describe("editor reducer", () => {
       expect(result.errors).toBe(null);
     });
 
-    it("should set errors on failure", () => {
+    test("should set errors on failure", () => {
       const errors = {
         title: ["can't be blank"],
         body: ["can't be blank"],
@@ -114,8 +115,8 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("ASYNC_START action", () => {
-    it("should set inProgress for ARTICLE_SUBMITTED subtype", () => {
+  test.describe("ASYNC_START action", () => {
+    test("should set inProgress for ARTICLE_SUBMITTED subtype", () => {
       const action = {
         type: ASYNC_START,
         subtype: ARTICLE_SUBMITTED,
@@ -124,7 +125,7 @@ describe("editor reducer", () => {
       expect(result.inProgress).toBe(true);
     });
 
-    it("should not modify state for other subtypes", () => {
+    test("should not modify state for other subtypes", () => {
       const currentState = { title: "Test Article" };
       const action = {
         type: ASYNC_START,
@@ -135,8 +136,8 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("ADD_TAG action", () => {
-    it("should add tag from tagInput", () => {
+  test.describe("ADD_TAG action", () => {
+    test("should add tag from tagInput", () => {
       const currentState = {
         tagList: ["react", "javascript"],
         tagInput: "nodejs",
@@ -147,7 +148,7 @@ describe("editor reducer", () => {
       expect(result.tagInput).toBe("");
     });
 
-    it("should add tag to empty list", () => {
+    test("should add tag to empty list", () => {
       const currentState = {
         tagList: [],
         tagInput: "react",
@@ -158,7 +159,7 @@ describe("editor reducer", () => {
       expect(result.tagInput).toBe("");
     });
 
-    it("should clear tagInput after adding", () => {
+    test("should clear tagInput after adding", () => {
       const currentState = {
         tagList: ["react"],
         tagInput: "redux",
@@ -169,8 +170,8 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("REMOVE_TAG action", () => {
-    it("should remove tag from list", () => {
+  test.describe("REMOVE_TAG action", () => {
+    test("should remove tag from list", () => {
       const currentState = {
         tagList: ["react", "javascript", "nodejs"],
       };
@@ -182,7 +183,7 @@ describe("editor reducer", () => {
       expect(result.tagList).toEqual(["react", "nodejs"]);
     });
 
-    it("should remove first tag", () => {
+    test("should remove first tag", () => {
       const currentState = {
         tagList: ["react", "javascript", "nodejs"],
       };
@@ -194,7 +195,7 @@ describe("editor reducer", () => {
       expect(result.tagList).toEqual(["javascript", "nodejs"]);
     });
 
-    it("should remove last tag", () => {
+    test("should remove last tag", () => {
       const currentState = {
         tagList: ["react", "javascript", "nodejs"],
       };
@@ -206,7 +207,7 @@ describe("editor reducer", () => {
       expect(result.tagList).toEqual(["react", "javascript"]);
     });
 
-    it("should handle removing non-existent tag", () => {
+    test("should handle removing non-existent tag", () => {
       const currentState = {
         tagList: ["react", "javascript"],
       };
@@ -218,7 +219,7 @@ describe("editor reducer", () => {
       expect(result.tagList).toEqual(["react", "javascript"]);
     });
 
-    it("should handle empty tag list", () => {
+    test("should handle empty tag list", () => {
       const currentState = {
         tagList: [],
       };
@@ -231,8 +232,8 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("UPDATE_FIELD_EDITOR action", () => {
-    it("should update title field", () => {
+  test.describe("UPDATE_FIELD_EDITOR action", () => {
+    test("should update title field", () => {
       const action = {
         type: UPDATE_FIELD_EDITOR,
         key: "title",
@@ -242,7 +243,7 @@ describe("editor reducer", () => {
       expect(result.title).toBe("New Article Title");
     });
 
-    it("should update description field", () => {
+    test("should update description field", () => {
       const action = {
         type: UPDATE_FIELD_EDITOR,
         key: "description",
@@ -252,7 +253,7 @@ describe("editor reducer", () => {
       expect(result.description).toBe("Article description");
     });
 
-    it("should update body field", () => {
+    test("should update body field", () => {
       const action = {
         type: UPDATE_FIELD_EDITOR,
         key: "body",
@@ -262,7 +263,7 @@ describe("editor reducer", () => {
       expect(result.body).toBe("Article body content");
     });
 
-    it("should update tagInput field", () => {
+    test("should update tagInput field", () => {
       const action = {
         type: UPDATE_FIELD_EDITOR,
         key: "tagInput",
@@ -272,7 +273,7 @@ describe("editor reducer", () => {
       expect(result.tagInput).toBe("react");
     });
 
-    it("should merge with existing state", () => {
+    test("should merge with existing state", () => {
       const currentState = {
         title: "Existing Title",
         description: "Existing Description",
@@ -289,15 +290,15 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original state on ADD_TAG", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original state on ADD_TAG", () => {
       const originalTagList = ["react", "javascript"];
       const originalState = { tagList: originalTagList, tagInput: "nodejs" };
       editorReducer(originalState, { type: ADD_TAG });
       expect(originalState.tagList).toEqual(["react", "javascript"]);
     });
 
-    it("should not mutate original state on REMOVE_TAG", () => {
+    test("should not mutate original state on REMOVE_TAG", () => {
       const originalTagList = ["react", "javascript", "nodejs"];
       const originalState = { tagList: originalTagList };
       editorReducer(originalState, { type: REMOVE_TAG, tag: "javascript" });
@@ -305,8 +306,8 @@ describe("editor reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action", () => {
       const currentState = { title: "Test", body: "Content" };
       const action = { type: "UNKNOWN_ACTION" };
       const result = editorReducer(currentState, action);

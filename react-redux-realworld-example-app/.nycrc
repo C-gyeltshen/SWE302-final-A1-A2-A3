@@ -1,0 +1,17 @@
+{
+  "all": true,
+  "include": ["src/**/*.js"],
+  "exclude": [
+    "src/index.js",
+    "src/setupTests.js",
+    "src/**/*.test.js",
+    "src/**/*.spec.js"
+  ],
+  "reporter": ["html", "text", "lcov", "json"],
+  "report-dir": "./coverage",
+  "temp-dir": "./.nyc_output",
+  "extension": [".js", ".jsx"],
+  "sourceMap": true,
+  "instrument": true,
+  "produce-source-map": true
+}

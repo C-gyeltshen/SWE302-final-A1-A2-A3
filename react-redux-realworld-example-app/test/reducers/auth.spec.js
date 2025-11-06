@@ -1,20 +1,21 @@
-import authReducer from "./auth";
-import {
+const { test, expect } = require('@playwright/test');
+const authReducer = require('../../src/reducers/auth').default;
+const {
   LOGIN,
   REGISTER,
   LOGIN_PAGE_UNLOADED,
   REGISTER_PAGE_UNLOADED,
   ASYNC_START,
   UPDATE_FIELD_AUTH,
-} from "../constants/actionTypes";
+} = require('../../src/constants/actionTypes');
 
-describe("auth reducer", () => {
-  it("should return initial state", () => {
+test.describe("auth reducer", () => {
+  test("should return initial state", () => {
     expect(authReducer(undefined, {})).toEqual({});
   });
 
-  describe("LOGIN action", () => {
-    it("should handle successful LOGIN", () => {
+  test.describe("LOGIN action", () => {
+    test("should handle successful LOGIN", () => {
       const action = {
         type: LOGIN,
         error: false,
@@ -27,7 +28,7 @@ describe("auth reducer", () => {
       });
     });
 
-    it("should handle LOGIN with errors", () => {
+    test("should handle LOGIN with errors", () => {
       const errors = { email: ["is invalid"] };
       const action = {
         type: LOGIN,
@@ -41,7 +42,7 @@ describe("auth reducer", () => {
       });
     });
 
-    it("should handle LOGIN error without payload", () => {
+    test("should handle LOGIN error without payload", () => {
       const action = {
         type: LOGIN,
         error: true,
@@ -54,8 +55,8 @@ describe("auth reducer", () => {
     });
   });
 
-  describe("REGISTER action", () => {
-    it("should handle successful REGISTER", () => {
+  test.describe("REGISTER action", () => {
+    test("should handle successful REGISTER", () => {
       const action = {
         type: REGISTER,
         error: false,
@@ -68,7 +69,7 @@ describe("auth reducer", () => {
       });
     });
 
-    it("should handle REGISTER with errors", () => {
+    test("should handle REGISTER with errors", () => {
       const errors = { username: ["is already taken"] };
       const action = {
         type: REGISTER,
@@ -83,8 +84,8 @@ describe("auth reducer", () => {
     });
   });
 
-  describe("LOGIN_PAGE_UNLOADED action", () => {
-    it("should reset state when LOGIN_PAGE_UNLOADED", () => {
+  test.describe("LOGIN_PAGE_UNLOADED action", () => {
+    test("should reset state when LOGIN_PAGE_UNLOADED", () => {
       const currentState = {
         email: "test@example.com",
         password: "password",
@@ -95,8 +96,8 @@ describe("auth reducer", () => {
     });
   });
 
-  describe("REGISTER_PAGE_UNLOADED action", () => {
-    it("should reset state when REGISTER_PAGE_UNLOADED", () => {
+  test.describe("REGISTER_PAGE_UNLOADED action", () => {
+    test("should reset state when REGISTER_PAGE_UNLOADED", () => {
       const currentState = {
         username: "testuser",
         email: "test@example.com",
@@ -110,8 +111,8 @@ describe("auth reducer", () => {
     });
   });
 
-  describe("ASYNC_START action", () => {
-    it("should set inProgress true for LOGIN subtype", () => {
+  test.describe("ASYNC_START action", () => {
+    test("should set inProgress true for LOGIN subtype", () => {
       const action = {
         type: ASYNC_START,
         subtype: LOGIN,
@@ -120,7 +121,7 @@ describe("auth reducer", () => {
       expect(result).toEqual({ inProgress: true });
     });
 
-    it("should set inProgress true for REGISTER subtype", () => {
+    test("should set inProgress true for REGISTER subtype", () => {
       const action = {
         type: ASYNC_START,
         subtype: REGISTER,
@@ -129,7 +130,7 @@ describe("auth reducer", () => {
       expect(result).toEqual({ inProgress: true });
     });
 
-    it("should not modify state for other subtypes", () => {
+    test("should not modify state for other subtypes", () => {
       const currentState = { email: "test@example.com" };
       const action = {
         type: ASYNC_START,
@@ -140,8 +141,8 @@ describe("auth reducer", () => {
     });
   });
 
-  describe("UPDATE_FIELD_AUTH action", () => {
-    it("should update email field", () => {
+  test.describe("UPDATE_FIELD_AUTH action", () => {
+    test("should update email field", () => {
       const action = {
         type: UPDATE_FIELD_AUTH,
         key: "email",
@@ -151,7 +152,7 @@ describe("auth reducer", () => {
       expect(result).toEqual({ email: "test@example.com" });
     });
 
-    it("should update password field", () => {
+    test("should update password field", () => {
       const action = {
         type: UPDATE_FIELD_AUTH,
         key: "password",
@@ -161,7 +162,7 @@ describe("auth reducer", () => {
       expect(result).toEqual({ password: "secretpassword" });
     });
 
-    it("should update username field", () => {
+    test("should update username field", () => {
       const action = {
         type: UPDATE_FIELD_AUTH,
         key: "username",
@@ -171,7 +172,7 @@ describe("auth reducer", () => {
       expect(result).toEqual({ username: "johndoe" });
     });
 
-    it("should merge with existing state", () => {
+    test("should merge with existing state", () => {
       const currentState = { email: "test@example.com" };
       const action = {
         type: UPDATE_FIELD_AUTH,
@@ -186,8 +187,8 @@ describe("auth reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original state", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original state", () => {
       const originalState = { email: "test@example.com" };
       const action = {
         type: UPDATE_FIELD_AUTH,
@@ -199,8 +200,8 @@ describe("auth reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action type", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action type", () => {
       const currentState = { email: "test@example.com" };
       const action = { type: "UNKNOWN_ACTION" };
       const result = authReducer(currentState, action);
