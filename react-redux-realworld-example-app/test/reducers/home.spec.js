@@ -1,13 +1,14 @@
-import homeReducer from "./home";
-import { HOME_PAGE_LOADED, HOME_PAGE_UNLOADED } from "../constants/actionTypes";
+const { test, expect } = require('@playwright/test');
+const homeReducer = require('../../src/reducers/home').default;
+const { HOME_PAGE_LOADED, HOME_PAGE_UNLOADED } = require('../../src/constants/actionTypes');
 
-describe("home reducer", () => {
-  it("should return initial state", () => {
+test.describe("home reducer", () => {
+  test("should return initial state", () => {
     expect(homeReducer(undefined, {})).toEqual({});
   });
 
-  describe("HOME_PAGE_LOADED action", () => {
-    it("should load tags", () => {
+  test.describe("HOME_PAGE_LOADED action", () => {
+    test("should load tags", () => {
       const tags = ["react", "javascript", "nodejs", "angular"];
       const action = {
         type: HOME_PAGE_LOADED,
@@ -17,7 +18,7 @@ describe("home reducer", () => {
       expect(result.tags).toEqual(tags);
     });
 
-    it("should handle empty tags", () => {
+    test("should handle empty tags", () => {
       const action = {
         type: HOME_PAGE_LOADED,
         payload: [{ tags: [] }, { articles: [], articlesCount: 0 }],
@@ -26,7 +27,7 @@ describe("home reducer", () => {
       expect(result.tags).toEqual([]);
     });
 
-    it("should handle missing payload", () => {
+    test("should handle missing payload", () => {
       const action = {
         type: HOME_PAGE_LOADED,
         payload: null,
@@ -35,7 +36,7 @@ describe("home reducer", () => {
       expect(result.tags).toEqual([]);
     });
 
-    it("should handle missing tags in payload", () => {
+    test("should handle missing tags in payload", () => {
       const action = {
         type: HOME_PAGE_LOADED,
         payload: [null, { articles: [], articlesCount: 0 }],
@@ -44,7 +45,7 @@ describe("home reducer", () => {
       expect(result.tags).toEqual([]);
     });
 
-    it("should handle undefined tags in payload", () => {
+    test("should handle undefined tags in payload", () => {
       const action = {
         type: HOME_PAGE_LOADED,
         payload: [{}, { articles: [], articlesCount: 0 }],
@@ -53,7 +54,7 @@ describe("home reducer", () => {
       expect(result.tags).toEqual([]);
     });
 
-    it("should merge with existing state", () => {
+    test("should merge with existing state", () => {
       const currentState = { otherProperty: "value" };
       const tags = ["react", "javascript"];
       const action = {
@@ -66,8 +67,8 @@ describe("home reducer", () => {
     });
   });
 
-  describe("HOME_PAGE_UNLOADED action", () => {
-    it("should reset state when home page unloaded", () => {
+  test.describe("HOME_PAGE_UNLOADED action", () => {
+    test("should reset state when home page unloaded", () => {
       const currentState = {
         tags: ["react", "javascript", "nodejs"],
       };
@@ -75,7 +76,7 @@ describe("home reducer", () => {
       expect(result).toEqual({});
     });
 
-    it("should reset state with multiple properties", () => {
+    test("should reset state with multiple properties", () => {
       const currentState = {
         tags: ["react"],
         otherProperty: "value",
@@ -85,8 +86,8 @@ describe("home reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original state", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original state", () => {
       const originalTags = ["react", "javascript"];
       const originalState = { tags: originalTags };
       const action = {
@@ -101,8 +102,8 @@ describe("home reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action", () => {
       const currentState = { tags: ["react", "javascript"] };
       const action = { type: "UNKNOWN_ACTION" };
       const result = homeReducer(currentState, action);

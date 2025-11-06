@@ -1,18 +1,19 @@
-import profileReducer from "./profile";
-import {
+const { test, expect } = require('@playwright/test');
+const profileReducer = require('../../src/reducers/profile').default;
+const {
   PROFILE_PAGE_LOADED,
   PROFILE_PAGE_UNLOADED,
   FOLLOW_USER,
   UNFOLLOW_USER,
-} from "../constants/actionTypes";
+} = require('../../src/constants/actionTypes');
 
-describe("profile reducer", () => {
-  it("should return initial state", () => {
+test.describe("profile reducer", () => {
+  test("should return initial state", () => {
     expect(profileReducer(undefined, {})).toEqual({});
   });
 
-  describe("PROFILE_PAGE_LOADED action", () => {
-    it("should load profile data", () => {
+  test.describe("PROFILE_PAGE_LOADED action", () => {
+    test("should load profile data", () => {
       const profile = {
         username: "testuser",
         bio: "Test bio",
@@ -27,7 +28,7 @@ describe("profile reducer", () => {
       expect(result).toEqual(profile);
     });
 
-    it("should load profile with following status", () => {
+    test("should load profile with following status", () => {
       const profile = {
         username: "johndoe",
         bio: "Developer",
@@ -42,7 +43,7 @@ describe("profile reducer", () => {
       expect(result.following).toBe(true);
     });
 
-    it("should replace existing profile", () => {
+    test("should replace existing profile", () => {
       const currentProfile = {
         username: "olduser",
         bio: "Old bio",
@@ -61,8 +62,8 @@ describe("profile reducer", () => {
     });
   });
 
-  describe("PROFILE_PAGE_UNLOADED action", () => {
-    it("should reset state when profile page unloaded", () => {
+  test.describe("PROFILE_PAGE_UNLOADED action", () => {
+    test("should reset state when profile page unloaded", () => {
       const currentState = {
         username: "testuser",
         bio: "Test bio",
@@ -76,8 +77,8 @@ describe("profile reducer", () => {
     });
   });
 
-  describe("FOLLOW_USER action", () => {
-    it("should update profile to following", () => {
+  test.describe("FOLLOW_USER action", () => {
+    test("should update profile to following", () => {
       const currentState = {
         username: "testuser",
         bio: "Test bio",
@@ -97,7 +98,7 @@ describe("profile reducer", () => {
       expect(result.following).toBe(true);
     });
 
-    it("should replace entire profile on follow", () => {
+    test("should replace entire profile on follow", () => {
       const action = {
         type: FOLLOW_USER,
         payload: {
@@ -115,8 +116,8 @@ describe("profile reducer", () => {
     });
   });
 
-  describe("UNFOLLOW_USER action", () => {
-    it("should update profile to not following", () => {
+  test.describe("UNFOLLOW_USER action", () => {
+    test("should update profile to not following", () => {
       const currentState = {
         username: "testuser",
         bio: "Test bio",
@@ -136,7 +137,7 @@ describe("profile reducer", () => {
       expect(result.following).toBe(false);
     });
 
-    it("should replace entire profile on unfollow", () => {
+    test("should replace entire profile on unfollow", () => {
       const action = {
         type: UNFOLLOW_USER,
         payload: {
@@ -154,8 +155,8 @@ describe("profile reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original state on FOLLOW_USER", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original state on FOLLOW_USER", () => {
       const originalState = {
         username: "testuser",
         bio: "Test bio",
@@ -176,8 +177,8 @@ describe("profile reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action", () => {
       const currentState = {
         username: "testuser",
         bio: "Test bio",

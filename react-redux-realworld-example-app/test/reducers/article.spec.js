@@ -1,18 +1,19 @@
-import articleReducer from "./article";
-import {
+const { test, expect } = require('@playwright/test');
+const articleReducer = require('../../src/reducers/article').default;
+const {
   ARTICLE_PAGE_LOADED,
   ARTICLE_PAGE_UNLOADED,
   ADD_COMMENT,
   DELETE_COMMENT,
-} from "../constants/actionTypes";
+} = require('../../src/constants/actionTypes');
 
-describe("article reducer", () => {
-  it("should return initial state", () => {
+test.describe("article reducer", () => {
+  test("should return initial state", () => {
     expect(articleReducer(undefined, {})).toEqual({});
   });
 
-  describe("ARTICLE_PAGE_LOADED action", () => {
-    it("should load article and comments", () => {
+  test.describe("ARTICLE_PAGE_LOADED action", () => {
+    test("should load article and comments", () => {
       const article = {
         slug: "test-article",
         title: "Test Article",
@@ -34,7 +35,7 @@ describe("article reducer", () => {
       });
     });
 
-    it("should handle empty comments", () => {
+    test("should handle empty comments", () => {
       const article = { slug: "test-article", title: "Test Article" };
       const action = {
         type: ARTICLE_PAGE_LOADED,
@@ -48,8 +49,8 @@ describe("article reducer", () => {
     });
   });
 
-  describe("ARTICLE_PAGE_UNLOADED action", () => {
-    it("should reset state when page unloaded", () => {
+  test.describe("ARTICLE_PAGE_UNLOADED action", () => {
+    test("should reset state when page unloaded", () => {
       const currentState = {
         article: { slug: "test", title: "Test" },
         comments: [{ id: 1, body: "Comment" }],
@@ -61,8 +62,8 @@ describe("article reducer", () => {
     });
   });
 
-  describe("ADD_COMMENT action", () => {
-    it("should add comment to empty list", () => {
+  test.describe("ADD_COMMENT action", () => {
+    test("should add comment to empty list", () => {
       const newComment = {
         id: 1,
         body: "New comment",
@@ -80,7 +81,7 @@ describe("article reducer", () => {
       });
     });
 
-    it("should add comment to existing list", () => {
+    test("should add comment to existing list", () => {
       const existingComments = [
         { id: 1, body: "First comment" },
         { id: 2, body: "Second comment" },
@@ -96,7 +97,7 @@ describe("article reducer", () => {
       expect(result.comments[2]).toEqual(newComment);
     });
 
-    it("should handle ADD_COMMENT error", () => {
+    test("should handle ADD_COMMENT error", () => {
       const errors = { body: ["can't be blank"] };
       const action = {
         type: ADD_COMMENT,
@@ -110,7 +111,7 @@ describe("article reducer", () => {
       });
     });
 
-    it("should handle null comments state", () => {
+    test("should handle null comments state", () => {
       const newComment = { id: 1, body: "New comment" };
       const action = {
         type: ADD_COMMENT,
@@ -122,8 +123,8 @@ describe("article reducer", () => {
     });
   });
 
-  describe("DELETE_COMMENT action", () => {
-    it("should delete comment by id", () => {
+  test.describe("DELETE_COMMENT action", () => {
+    test("should delete comment by id", () => {
       const comments = [
         { id: 1, body: "First comment" },
         { id: 2, body: "Second comment" },
@@ -140,7 +141,7 @@ describe("article reducer", () => {
       expect(result.comments[1].id).toBe(3);
     });
 
-    it("should handle deleting first comment", () => {
+    test("should handle deleting first comment", () => {
       const comments = [
         { id: 1, body: "First comment" },
         { id: 2, body: "Second comment" },
@@ -154,7 +155,7 @@ describe("article reducer", () => {
       expect(result.comments[0].id).toBe(2);
     });
 
-    it("should handle deleting last comment", () => {
+    test("should handle deleting last comment", () => {
       const comments = [
         { id: 1, body: "First comment" },
         { id: 2, body: "Second comment" },
@@ -168,7 +169,7 @@ describe("article reducer", () => {
       expect(result.comments[0].id).toBe(1);
     });
 
-    it("should handle deleting non-existent comment", () => {
+    test("should handle deleting non-existent comment", () => {
       const comments = [
         { id: 1, body: "First comment" },
         { id: 2, body: "Second comment" },
@@ -181,7 +182,7 @@ describe("article reducer", () => {
       expect(result.comments).toHaveLength(2);
     });
 
-    it("should handle empty comments array", () => {
+    test("should handle empty comments array", () => {
       const action = {
         type: DELETE_COMMENT,
         commentId: 1,
@@ -191,8 +192,8 @@ describe("article reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original state on ADD_COMMENT", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original state on ADD_COMMENT", () => {
       const originalComments = [{ id: 1, body: "First" }];
       const originalState = { comments: originalComments };
       const newComment = { id: 2, body: "Second" };
@@ -206,7 +207,7 @@ describe("article reducer", () => {
       expect(originalState.comments).toEqual(originalComments);
     });
 
-    it("should not mutate original state on DELETE_COMMENT", () => {
+    test("should not mutate original state on DELETE_COMMENT", () => {
       const originalComments = [
         { id: 1, body: "First" },
         { id: 2, body: "Second" },
@@ -221,8 +222,8 @@ describe("article reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action", () => {
       const currentState = { article: { slug: "test" }, comments: [] };
       const action = { type: "UNKNOWN_ACTION" };
       const result = articleReducer(currentState, action);

@@ -1,17 +1,18 @@
-import settingsReducer from "./settings";
-import {
+const { test, expect } = require('@playwright/test');
+const settingsReducer = require('../../src/reducers/settings').default;
+const {
   SETTINGS_SAVED,
   SETTINGS_PAGE_UNLOADED,
   ASYNC_START,
-} from "../constants/actionTypes";
+} = require('../../src/constants/actionTypes');
 
-describe("settings reducer", () => {
-  it("should return initial state", () => {
+test.describe("settings reducer", () => {
+  test("should return initial state", () => {
     expect(settingsReducer(undefined, {})).toEqual({});
   });
 
-  describe("SETTINGS_SAVED action", () => {
-    it("should handle successful settings save", () => {
+  test.describe("SETTINGS_SAVED action", () => {
+    test("should handle successful settings save", () => {
       const currentState = { inProgress: true };
       const action = {
         type: SETTINGS_SAVED,
@@ -25,7 +26,7 @@ describe("settings reducer", () => {
       });
     });
 
-    it("should handle settings save with errors", () => {
+    test("should handle settings save with errors", () => {
       const errors = {
         email: ["is invalid"],
         password: ["is too short"],
@@ -42,7 +43,7 @@ describe("settings reducer", () => {
       });
     });
 
-    it("should clear inProgress flag on success", () => {
+    test("should clear inProgress flag on success", () => {
       const currentState = { inProgress: true, someField: "value" };
       const action = {
         type: SETTINGS_SAVED,
@@ -55,8 +56,8 @@ describe("settings reducer", () => {
     });
   });
 
-  describe("SETTINGS_PAGE_UNLOADED action", () => {
-    it("should reset state when settings page unloaded", () => {
+  test.describe("SETTINGS_PAGE_UNLOADED action", () => {
+    test("should reset state when settings page unloaded", () => {
       const currentState = {
         inProgress: false,
         errors: null,
@@ -71,7 +72,7 @@ describe("settings reducer", () => {
       expect(result).toEqual({});
     });
 
-    it("should reset state with errors", () => {
+    test("should reset state with errors", () => {
       const currentState = {
         inProgress: false,
         errors: { email: ["is invalid"] },
@@ -83,14 +84,14 @@ describe("settings reducer", () => {
     });
   });
 
-  describe("ASYNC_START action", () => {
-    it("should set inProgress to true", () => {
+  test.describe("ASYNC_START action", () => {
+    test("should set inProgress to true", () => {
       const action = { type: ASYNC_START };
       const result = settingsReducer({}, action);
       expect(result).toEqual({ inProgress: true });
     });
 
-    it("should update inProgress in existing state", () => {
+    test("should update inProgress in existing state", () => {
       const currentState = {
         username: "testuser",
         email: "test@example.com",
@@ -103,7 +104,7 @@ describe("settings reducer", () => {
       expect(result.email).toBe("test@example.com");
     });
 
-    it("should preserve existing fields when setting inProgress", () => {
+    test("should preserve existing fields when setting inProgress", () => {
       const currentState = {
         image: "https://example.com/avatar.jpg",
         bio: "My bio",
@@ -118,14 +119,14 @@ describe("settings reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original state on ASYNC_START", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original state on ASYNC_START", () => {
       const originalState = { username: "testuser", inProgress: false };
       settingsReducer(originalState, { type: ASYNC_START });
       expect(originalState.inProgress).toBe(false);
     });
 
-    it("should not mutate original state on SETTINGS_SAVED", () => {
+    test("should not mutate original state on SETTINGS_SAVED", () => {
       const originalState = { inProgress: true };
       const action = {
         type: SETTINGS_SAVED,
@@ -137,8 +138,8 @@ describe("settings reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action", () => {
       const currentState = {
         username: "testuser",
         email: "test@example.com",
@@ -149,8 +150,8 @@ describe("settings reducer", () => {
     });
   });
 
-  describe("error handling", () => {
-    it("should handle multiple errors", () => {
+  test.describe("error handling", () => {
+    test("should handle multiple errors", () => {
       const errors = {
         username: ["is already taken", "is too short"],
         email: ["is invalid"],

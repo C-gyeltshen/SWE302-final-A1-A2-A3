@@ -1,5 +1,6 @@
-import commonReducer from "./common";
-import {
+const { test, expect } = require('@playwright/test');
+const commonReducer = require('../../src/reducers/common').default;
+const {
   APP_LOAD,
   REDIRECT,
   LOGOUT,
@@ -16,21 +17,21 @@ import {
   SETTINGS_PAGE_UNLOADED,
   LOGIN_PAGE_UNLOADED,
   REGISTER_PAGE_UNLOADED,
-} from "../constants/actionTypes";
+} = require('../../src/constants/actionTypes');
 
-describe("common reducer", () => {
+test.describe("common reducer", () => {
   const defaultState = {
     appName: "Conduit",
     token: null,
     viewChangeCounter: 0,
   };
 
-  it("should return default state", () => {
+  test("should return default state", () => {
     expect(commonReducer(undefined, {})).toEqual(defaultState);
   });
 
-  describe("APP_LOAD action", () => {
-    it("should load app with token and user", () => {
+  test.describe("APP_LOAD action", () => {
+    test("should load app with token and user", () => {
       const user = { username: "testuser", email: "test@example.com" };
       const action = {
         type: APP_LOAD,
@@ -44,7 +45,7 @@ describe("common reducer", () => {
       expect(result.appName).toBe("Conduit");
     });
 
-    it("should load app without token", () => {
+    test("should load app without token", () => {
       const action = {
         type: APP_LOAD,
         token: null,
@@ -56,7 +57,7 @@ describe("common reducer", () => {
       expect(result.currentUser).toBe(null);
     });
 
-    it("should handle missing payload", () => {
+    test("should handle missing payload", () => {
       const action = {
         type: APP_LOAD,
         token: "test-token",
@@ -67,8 +68,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("REDIRECT action", () => {
-    it("should clear redirectTo", () => {
+  test.describe("REDIRECT action", () => {
+    test("should clear redirectTo", () => {
       const currentState = {
         ...defaultState,
         redirectTo: "/article/test-slug",
@@ -78,8 +79,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("LOGOUT action", () => {
-    it("should clear user data and redirect to home", () => {
+  test.describe("LOGOUT action", () => {
+    test("should clear user data and redirect to home", () => {
       const currentState = {
         ...defaultState,
         token: "test-token",
@@ -92,8 +93,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("ARTICLE_SUBMITTED action", () => {
-    it("should redirect to article page on success", () => {
+  test.describe("ARTICLE_SUBMITTED action", () => {
+    test("should redirect to article page on success", () => {
       const action = {
         type: ARTICLE_SUBMITTED,
         error: false,
@@ -103,7 +104,7 @@ describe("common reducer", () => {
       expect(result.redirectTo).toBe("/article/new-article-slug");
     });
 
-    it("should not redirect on error", () => {
+    test("should not redirect on error", () => {
       const action = {
         type: ARTICLE_SUBMITTED,
         error: true,
@@ -113,7 +114,7 @@ describe("common reducer", () => {
       expect(result.redirectTo).toBe(null);
     });
 
-    it("should not redirect when payload is missing", () => {
+    test("should not redirect when payload is missing", () => {
       const action = {
         type: ARTICLE_SUBMITTED,
         error: false,
@@ -123,7 +124,7 @@ describe("common reducer", () => {
       expect(result.redirectTo).toBe(null);
     });
 
-    it("should not redirect when article is missing", () => {
+    test("should not redirect when article is missing", () => {
       const action = {
         type: ARTICLE_SUBMITTED,
         error: false,
@@ -134,8 +135,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("SETTINGS_SAVED action", () => {
-    it("should update user and redirect on success", () => {
+  test.describe("SETTINGS_SAVED action", () => {
+    test("should update user and redirect on success", () => {
       const user = {
         username: "updateduser",
         email: "updated@example.com",
@@ -151,7 +152,7 @@ describe("common reducer", () => {
       expect(result.currentUser).toEqual(user);
     });
 
-    it("should not redirect on error", () => {
+    test("should not redirect on error", () => {
       const action = {
         type: SETTINGS_SAVED,
         error: true,
@@ -163,8 +164,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("LOGIN action", () => {
-    it("should set token, user and redirect on success", () => {
+  test.describe("LOGIN action", () => {
+    test("should set token, user and redirect on success", () => {
       const user = {
         username: "testuser",
         email: "test@example.com",
@@ -181,7 +182,7 @@ describe("common reducer", () => {
       expect(result.currentUser).toEqual(user);
     });
 
-    it("should not set token or redirect on error", () => {
+    test("should not set token or redirect on error", () => {
       const action = {
         type: LOGIN,
         error: true,
@@ -194,8 +195,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("REGISTER action", () => {
-    it("should set token, user and redirect on success", () => {
+  test.describe("REGISTER action", () => {
+    test("should set token, user and redirect on success", () => {
       const user = {
         username: "newuser",
         email: "newuser@example.com",
@@ -212,7 +213,7 @@ describe("common reducer", () => {
       expect(result.currentUser).toEqual(user);
     });
 
-    it("should not set token or redirect on error", () => {
+    test("should not set token or redirect on error", () => {
       const action = {
         type: REGISTER,
         error: true,
@@ -225,14 +226,14 @@ describe("common reducer", () => {
     });
   });
 
-  describe("DELETE_ARTICLE action", () => {
-    it("should redirect to home after deleting article", () => {
+  test.describe("DELETE_ARTICLE action", () => {
+    test("should redirect to home after deleting article", () => {
       const result = commonReducer(defaultState, { type: DELETE_ARTICLE });
       expect(result.redirectTo).toBe("/");
     });
   });
 
-  describe("page unload actions", () => {
+  test.describe("page unload actions", () => {
     const pageUnloadActions = [
       ARTICLE_PAGE_UNLOADED,
       EDITOR_PAGE_UNLOADED,
@@ -245,19 +246,19 @@ describe("common reducer", () => {
     ];
 
     pageUnloadActions.forEach((actionType) => {
-      it(`should increment viewChangeCounter for ${actionType}`, () => {
+      test(`should increment viewChangeCounter for ${actionType}`, () => {
         const currentState = { ...defaultState, viewChangeCounter: 5 };
         const result = commonReducer(currentState, { type: actionType });
         expect(result.viewChangeCounter).toBe(6);
       });
     });
 
-    it("should increment viewChangeCounter from 0", () => {
+    test("should increment viewChangeCounter from 0", () => {
       const result = commonReducer(defaultState, { type: HOME_PAGE_UNLOADED });
       expect(result.viewChangeCounter).toBe(1);
     });
 
-    it("should preserve other state when incrementing counter", () => {
+    test("should preserve other state when incrementing counter", () => {
       const currentState = {
         ...defaultState,
         token: "test-token",
@@ -273,8 +274,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("state immutability", () => {
-    it("should not mutate original state", () => {
+  test.describe("state immutability", () => {
+    test("should not mutate original state", () => {
       const originalState = { ...defaultState };
       const action = {
         type: APP_LOAD,
@@ -286,8 +287,8 @@ describe("common reducer", () => {
     });
   });
 
-  describe("unknown action", () => {
-    it("should return current state for unknown action", () => {
+  test.describe("unknown action", () => {
+    test("should return current state for unknown action", () => {
       const currentState = { ...defaultState, token: "test-token" };
       const action = { type: "UNKNOWN_ACTION" };
       const result = commonReducer(currentState, action);
