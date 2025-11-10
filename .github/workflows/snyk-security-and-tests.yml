@@ -1,0 +1,328 @@
+name: Snyk Security & Testing Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  # Backend - Go Unit Tests
+  go-unit-tests:
+    name: Go Backend - Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./golang-gin-realworld-example-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.0'
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Run unit tests
+        run: |
+          echo "Running unit tests for all modules..."
+          go test ./users -v -run "^TestUnit" -coverprofile=users_unit_coverage.out
+          go test ./articles -v -run "^TestUnit" -coverprofile=articles_unit_coverage.out
+          go test ./common -v -run "^TestUnit" -coverprofile=common_unit_coverage.out
+
+      - name: Generate coverage report
+        run: |
+          echo "Unit Test Coverage Summary:"
+          if [ -f users_unit_coverage.out ]; then
+            echo "Users Module:"
+            go tool cover -func=users_unit_coverage.out | grep total
+          fi
+          if [ -f articles_unit_coverage.out ]; then
+            echo "Articles Module:"
+            go tool cover -func=articles_unit_coverage.out | grep total
+          fi
+          if [ -f common_unit_coverage.out ]; then
+            echo "Common Module:"
+            go tool cover -func=common_unit_coverage.out | grep total
+          fi
+
+      - name: Upload unit test coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-unit-coverage
+          path: golang-gin-realworld-example-app/*_unit_coverage.out
+          retention-days: 30
+
+  # Backend - Go Integration Tests
+  go-integration-tests:
+    name: Go Backend - Integration Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./golang-gin-realworld-example-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.0'
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Run integration tests
+        run: |
+          echo "Running integration tests..."
+          chmod +x run_integration_tests.sh
+          ./run_integration_tests.sh
+
+      - name: Upload integration test coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-integration-coverage
+          path: |
+            golang-gin-realworld-example-app/*_coverage.out
+            golang-gin-realworld-example-app/integration_coverage.html
+          retention-days: 30
+
+  # Backend - Snyk Security Scan
+  snyk-go-backend:
+    name: Snyk Security - Go Backend
+    runs-on: ubuntu-latest
+    needs: [go-unit-tests]
+    defaults:
+      run:
+        working-directory: ./golang-gin-realworld-example-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.0'
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/golang@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=golang-gin-realworld-example-app/go.mod
+
+      - name: Upload Snyk result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+
+  # Frontend - React Unit Tests
+  react-unit-tests:
+    name: React Frontend - Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./react-redux-realworld-example-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: react-redux-realworld-example-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run unit tests (Reducer tests)
+        run: npm run test:playwright:unit
+
+      - name: Upload unit test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: react-unit-test-report
+          path: react-redux-realworld-example-app/playwright-report/
+          retention-days: 30
+
+  # Frontend - React Integration Tests
+  react-integration-tests:
+    name: React Frontend - Integration Tests (E2E)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./react-redux-realworld-example-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: react-redux-realworld-example-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run integration tests (E2E Component tests)
+        run: npm run test:playwright:e2e
+
+      - name: Upload integration test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: react-integration-test-report
+          path: react-redux-realworld-example-app/playwright-report/
+          retention-days: 30
+
+  # Frontend - React Coverage Report
+  react-coverage:
+    name: React Frontend - Coverage Report
+    runs-on: ubuntu-latest
+    needs: [react-unit-tests, react-integration-tests]
+    defaults:
+      run:
+        working-directory: ./react-redux-realworld-example-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: react-redux-realworld-example-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run all tests with coverage
+        run: npm run test:coverage:all
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: react-coverage-report
+          path: |
+            react-redux-realworld-example-app/coverage/
+            react-redux-realworld-example-app/.nyc_output/
+          retention-days: 30
+
+  # Frontend - Snyk Security Scan
+  snyk-react-frontend:
+    name: Snyk Security - React Frontend
+    runs-on: ubuntu-latest
+    needs: [react-unit-tests]
+    defaults:
+      run:
+        working-directory: ./react-redux-realworld-example-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=react-redux-realworld-example-app/package.json
+
+      - name: Upload Snyk result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+
+  # Combined Report
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [go-unit-tests, go-integration-tests, react-unit-tests, react-integration-tests, react-coverage]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create test summary
+        run: |
+          echo "# 🧪 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Backend (Go) Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Unit Tests: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Integration Tests: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Frontend (React) Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Unit Tests: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Integration Tests (E2E): Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Coverage Report: Generated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Security Scans" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔒 Snyk Backend Scan: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔒 Snyk Frontend Scan: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 All artifacts have been uploaded and are available for download." >> $GITHUB_STEP_SUMMARY

@@ -13,7 +13,6 @@ In this assignment, you will perform security testing on the RealWorld Conduit a
 ---
 
 ## Part A: Static Application Security Testing (SAST)
-
 ### Prerequisites
 - Both backend and frontend code accessible
 - Docker installed (for SonarQube)
