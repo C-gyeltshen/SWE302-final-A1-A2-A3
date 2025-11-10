@@ -46,7 +46,7 @@
     "test:playwright:debug": "playwright test --debug",
     "test:playwright:report": "playwright show-report",
     "test:coverage": "rm -rf .nyc_output coverage && nyc --reporter=html --reporter=text --reporter=lcov playwright test test/reducers",
-    "test:coverage:all": "rm -rf .nyc_output coverage && BABEL_ENV=test playwright test && nyc report",
+    "test:coverage:all": "rm -rf .nyc_output coverage && BABEL_ENV=test nyc --reporter=html --reporter=text --reporter=lcov playwright test",
     "test:coverage:report": "nyc report --reporter=html --reporter=text",
     "coverage:view": "open coverage/index.html",
     "eject": "react-scripts eject"
