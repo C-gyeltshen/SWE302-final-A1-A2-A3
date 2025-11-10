@@ -88,7 +88,6 @@ Test the complete authentication flow:
    - POST `/api/users` with valid data
    - Verify response contains user object and token
    - Verify user is saved in database
-
 2. **User Login**
    - POST `/api/users/login` with valid credentials
    - Verify JWT token is returned
@@ -181,7 +180,6 @@ go tool cover -html=coverage.out -o coverage.html
 #### 3.3 Coverage Analysis Report
 
 Create `coverage-report.md` with:
-
 1. **Current Coverage Statistics**kqnwknqkwnkqn
    - Coverage percentage per package
    - Overall project coverage
