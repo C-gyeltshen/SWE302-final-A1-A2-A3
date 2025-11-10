@@ -1,5 +1,5 @@
-const { test, expect } = require('@playwright/test');
-const articleListReducer = require('../../src/reducers/articleList').default;
+const { test, expect } = require("@playwright/test");
+const articleListReducer = require("../../src/reducers/articleList").default;
 const {
   ARTICLE_FAVORITED,
   ARTICLE_UNFAVORITED,
@@ -12,7 +12,7 @@ const {
   PROFILE_PAGE_UNLOADED,
   PROFILE_FAVORITES_PAGE_LOADED,
   PROFILE_FAVORITES_PAGE_UNLOADED,
-} = require('../../src/constants/actionTypes');
+} = require("../../src/constants/actionTypes");
 
 test.describe("articleList reducer", () => {
   test("should return initial state", () => {
