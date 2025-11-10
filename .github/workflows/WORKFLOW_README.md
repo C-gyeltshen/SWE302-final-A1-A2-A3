@@ -9,18 +9,21 @@ This workflow provides comprehensive security scanning and testing for both the 
 ### 🔵 Backend (Go) Jobs
 
 #### 1. **go-unit-tests**
+
 - Runs all unit tests for the Go backend
 - Tests modules: `users`, `articles`, `common`
 - Generates coverage reports for each module
 - Uploads coverage artifacts
 
 #### 2. **go-integration-tests**
+
 - Executes the complete integration test suite
 - Uses `run_integration_tests.sh` script
 - Generates combined coverage report with HTML output
 - Uploads coverage artifacts
 
 #### 3. **snyk-go-backend**
+
 - Performs security vulnerability scanning on Go dependencies
 - Checks `go.mod` for vulnerabilities
 - Severity threshold: HIGH
@@ -30,23 +33,27 @@ This workflow provides comprehensive security scanning and testing for both the 
 ### 🟢 Frontend (React) Jobs
 
 #### 4. **react-unit-tests**
+
 - Runs unit tests using Playwright
 - Focuses on reducer tests
 - Command: `npm run test:playwright:unit`
 - Uploads test reports
 
 #### 5. **react-integration-tests**
+
 - Runs E2E component tests using Playwright
 - Command: `npm run test:playwright:e2e`
 - Uploads test reports
 
 #### 6. **react-coverage**
+
 - Generates comprehensive coverage report
 - Runs all tests with coverage instrumentation
 - Uses NYC for coverage reporting
 - Uploads coverage artifacts (HTML, LCOV, JSON)
 
 #### 7. **snyk-react-frontend**
+
 - Performs security vulnerability scanning on npm dependencies
 - Checks `package.json` for vulnerabilities
 - Severity threshold: HIGH
@@ -56,6 +63,7 @@ This workflow provides comprehensive security scanning and testing for both the 
 ### 📊 Summary Job
 
 #### 8. **test-summary**
+
 - Aggregates all test results
 - Downloads all artifacts
 - Creates a summary in GitHub Actions interface
@@ -83,11 +91,13 @@ You need to configure the following secret in your GitHub repository:
 ### Setup Steps
 
 1. **Authenticate Snyk** (Already completed ✅)
+
    ```bash
    snyk auth
    ```
 
 2. **Add Project to Snyk** (Already completed ✅)
+
    ```bash
    snyk monitor
    ```
@@ -120,17 +130,20 @@ The workflow generates the following artifacts:
 ## Viewing Results
 
 ### Test Results
+
 - Navigate to Actions tab → Select workflow run
 - View job summaries and logs
 - Download artifacts for detailed reports
 
 ### Coverage Reports
+
 - Download artifacts from the workflow run
 - Open HTML files in a browser:
   - Go: `integration_coverage.html`
   - React: `coverage/index.html`
 
 ### Security Scan Results
+
 - Navigate to Security tab → Code scanning
 - View Snyk findings categorized by severity
 - Each finding includes:
@@ -144,6 +157,7 @@ The workflow generates the following artifacts:
 Before pushing, you can run tests locally:
 
 ### Backend (Go)
+
 ```bash
 cd golang-gin-realworld-example-app
 
@@ -161,6 +175,7 @@ snyk test
 ```
 
 ### Frontend (React)
+
 ```bash
 cd react-redux-realworld-example-app
 
@@ -186,15 +201,18 @@ snyk test
 ### Common Issues
 
 1. **Snyk Token Not Found**
+
    - Ensure `SNYK_TOKEN` is added to repository secrets
    - Check token hasn't expired
 
 2. **Tests Failing**
+
    - Check test logs in Actions tab
    - Run tests locally to reproduce
    - Review code changes that may have broken tests
 
 3. **Coverage Not Generated**
+
    - Ensure tests are running successfully
    - Check artifact upload logs
    - Verify file paths in workflow
@@ -208,6 +226,7 @@ snyk test
 ### Updating Dependencies
 
 When updating dependencies:
+
 1. Run Snyk locally first: `snyk test`
 2. Fix high/critical vulnerabilities before pushing
 3. Update `go.mod` or `package.json` as needed
@@ -216,11 +235,13 @@ When updating dependencies:
 ### Modifying Workflow
 
 The workflow file is located at:
+
 ```
 .github/workflows/snyk-security-and-tests.yml
 ```
 
 Key sections to modify:
+
 - **Triggers**: `on:` section
 - **Node/Go versions**: `uses: actions/setup-*` steps
 - **Test commands**: `run:` sections in each job
@@ -239,6 +260,7 @@ Key sections to modify:
 ## Workflow Optimization
 
 The workflow is optimized for:
+
 - **Speed**: Parallel job execution, dependency caching
 - **Reliability**: Continue on error for scans, always run summary
 - **Visibility**: Comprehensive artifacts, GitHub summaries
@@ -247,6 +269,7 @@ The workflow is optimized for:
 ## Support
 
 For issues or questions:
+
 - Check workflow logs in Actions tab
 - Review this README
 - Consult Snyk documentation: https://docs.snyk.io

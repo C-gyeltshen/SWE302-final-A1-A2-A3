@@ -3,7 +3,9 @@
 ## 🚀 Running the Workflow
 
 ### Automatically Triggered
+
 The workflow runs automatically when you:
+
 ```bash
 # Push to main or develop
 git push origin main
@@ -14,6 +16,7 @@ gh pr create --base main
 ```
 
 ### Manual Trigger
+
 1. Go to GitHub repository
 2. Click "Actions" tab
 3. Select "Snyk Security & Testing Pipeline"
@@ -23,6 +26,7 @@ gh pr create --base main
 ## 📊 Viewing Results
 
 ### Via GitHub UI
+
 ```
 1. Actions tab → Select workflow run
 2. Click on individual jobs to see logs
@@ -31,6 +35,7 @@ gh pr create --base main
 ```
 
 ### Via GitHub CLI
+
 ```bash
 # List recent workflow runs
 gh run list --workflow=snyk-security-and-tests.yml
@@ -102,6 +107,7 @@ npm run test:playwright:report
 ## 🔒 Snyk Commands
 
 ### Backend (Go)
+
 ```bash
 cd golang-gin-realworld-example-app
 
@@ -119,6 +125,7 @@ snyk fix
 ```
 
 ### Frontend (React)
+
 ```bash
 cd react-redux-realworld-example-app
 
@@ -138,6 +145,7 @@ snyk fix
 ## 🔧 Workflow Maintenance
 
 ### Update Workflow File
+
 ```bash
 # Edit workflow
 code .github/workflows/snyk-security-and-tests.yml
@@ -149,13 +157,15 @@ git push origin main
 ```
 
 ### Disable Workflow
+
 ```yaml
 # Add to workflow file at top level
 on:
-  workflow_dispatch:  # Only manual triggers
+  workflow_dispatch: # Only manual triggers
 ```
 
 ### Re-run Failed Jobs
+
 ```bash
 # Via GitHub CLI
 gh run rerun <run-id>
@@ -167,6 +177,7 @@ gh run rerun <run-id> --failed
 ## 📦 Artifact Management
 
 ### Download All Artifacts (CLI)
+
 ```bash
 # Download from specific run
 gh run download <run-id>
@@ -179,6 +190,7 @@ gh api /repos/:owner/:repo/actions/runs/<run-id>/artifacts
 ```
 
 ### View Coverage Files
+
 ```bash
 # After downloading artifacts
 cd react-coverage-report
@@ -191,6 +203,7 @@ open integration_coverage.html
 ## 🎯 Common Scenarios
 
 ### Scenario 1: Fix Security Vulnerability
+
 ```bash
 # 1. Check Snyk findings
 snyk test
@@ -213,6 +226,7 @@ git push origin main
 ```
 
 ### Scenario 2: Test Fails in CI but Passes Locally
+
 ```bash
 # 1. Download test artifacts from failed run
 gh run download <run-id>
@@ -235,6 +249,7 @@ npm test
 ```
 
 ### Scenario 3: Add New Test Suite
+
 ```yaml
 # Add new job to workflow
 new-test-suite:
@@ -250,6 +265,7 @@ new-test-suite:
 ## 🛠️ Debugging
 
 ### Enable Debug Logging
+
 ```bash
 # Set secret in GitHub repo settings
 ACTIONS_STEP_DEBUG = true
@@ -257,6 +273,7 @@ ACTIONS_RUNNER_DEBUG = true
 ```
 
 ### Check Job Logs
+
 ```bash
 # Via CLI
 gh run view <run-id> --log
@@ -266,6 +283,7 @@ gh run view <run-id> --log > workflow.log
 ```
 
 ### Test Workflow Locally
+
 ```bash
 # Install act (GitHub Actions local runner)
 brew install act  # macOS
@@ -277,12 +295,14 @@ act -W .github/workflows/snyk-security-and-tests.yml
 ## 📈 Performance Tips
 
 ### Speed Up Workflow
+
 1. **Enable caching** (already configured)
 2. **Run independent jobs in parallel** (already configured)
 3. **Limit test scope** for PRs
 4. **Use matrix strategy** for multiple versions
 
 ### Reduce Costs
+
 1. **Use self-hosted runners** for private repos
 2. **Optimize artifact retention** (currently 30 days)
 3. **Cancel redundant runs**
@@ -297,6 +317,7 @@ concurrency:
 ## 🔔 Notifications
 
 ### Get Notifications for Failed Runs
+
 ```bash
 # Via GitHub settings
 Settings → Notifications → Actions

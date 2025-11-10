@@ -3,6 +3,7 @@
 ## ✅ Pre-Deployment Verification
 
 ### 1. Snyk Setup
+
 - [x] Snyk CLI installed
 - [x] Snyk authenticated (`snyk auth`)
 - [x] Backend project added to Snyk
@@ -11,6 +12,7 @@
 - [ ] `SNYK_TOKEN` added to GitHub repository secrets
 
 **Verify Snyk Setup:**
+
 ```bash
 # Check if authenticated
 snyk auth
@@ -25,12 +27,14 @@ snyk test
 ```
 
 ### 2. GitHub Repository Setup
+
 - [ ] Repository exists: `C-gyeltshen/SWE302-final-A1-A2-A3`
 - [ ] You have push access to the repository
 - [ ] `.github/workflows/` directory exists
 - [ ] Workflow files are ready to commit
 
 **Verify Repository:**
+
 ```bash
 # Check current repository
 git remote -v
@@ -40,6 +44,7 @@ git remote -v
 ```
 
 ### 3. GitHub Secrets Configuration
+
 - [ ] Navigate to: Settings → Secrets and variables → Actions
 - [ ] Click "New repository secret"
 - [ ] Name: `SNYK_TOKEN`
@@ -47,6 +52,7 @@ git remote -v
 - [ ] Click "Add secret"
 
 **Get Snyk Token:**
+
 1. Visit: https://app.snyk.io/account
 2. Click "Click to show" under API Token
 3. Copy the token
@@ -55,6 +61,7 @@ git remote -v
 ### 4. Local Test Verification
 
 #### Backend Tests
+
 ```bash
 cd golang-gin-realworld-example-app
 
@@ -73,6 +80,7 @@ chmod +x run_integration_tests.sh
 - [ ] Coverage reports generated successfully
 
 #### Frontend Tests
+
 ```bash
 cd react-redux-realworld-example-app
 
@@ -119,6 +127,7 @@ ls -la .github/workflows/
 ### 6. Workflow File Validation
 
 **Check YAML syntax:**
+
 ```bash
 # Install yamllint (if not already installed)
 brew install yamllint  # macOS
@@ -134,6 +143,7 @@ yamllint .github/workflows/snyk-security-and-tests.yml
 ### 7. Dependencies Check
 
 #### Go Dependencies
+
 ```bash
 cd golang-gin-realworld-example-app
 go mod verify
@@ -145,6 +155,7 @@ go mod tidy
 - [ ] No missing dependencies
 
 #### React Dependencies
+
 ```bash
 cd react-redux-realworld-example-app
 npm audit
@@ -176,6 +187,7 @@ git diff
 ## 🚀 Deployment Steps
 
 ### Step 1: Review Files
+
 ```bash
 # Review workflow file
 cat .github/workflows/snyk-security-and-tests.yml
@@ -188,6 +200,7 @@ cat .github/workflows/WORKFLOW_README.md
 - [ ] Documentation is clear and helpful
 
 ### Step 2: Stage Files
+
 ```bash
 # Add workflow files
 git add .github/workflows/
@@ -200,12 +213,13 @@ git status
 - [ ] No unwanted files included
 
 ### Step 3: Commit
+
 ```bash
 git commit -m "feat: Add comprehensive CI/CD workflow with Snyk security scanning
 
 - Add GitHub Actions workflow for automated testing and security scanning
 - Include unit and integration tests for Go backend
-- Include unit and integration tests for React frontend  
+- Include unit and integration tests for React frontend
 - Add Snyk vulnerability scanning for both projects
 - Add coverage reporting and artifact storage
 - Add comprehensive documentation and guides
@@ -233,6 +247,7 @@ Features:
 - [ ] Commit message is descriptive
 
 ### Step 4: Push to GitHub
+
 ```bash
 git push origin main
 ```
@@ -258,6 +273,7 @@ git push origin main
 Monitor each job during first run:
 
 #### go-unit-tests
+
 - [ ] Checkout successful
 - [ ] Go setup complete (version 1.23.0)
 - [ ] Cache restored (or created if first run)
@@ -269,6 +285,7 @@ Monitor each job during first run:
 - [ ] Artifacts uploaded
 
 #### go-integration-tests
+
 - [ ] Checkout successful
 - [ ] Go setup complete
 - [ ] Integration script executed
@@ -277,6 +294,7 @@ Monitor each job during first run:
 - [ ] Artifacts uploaded
 
 #### snyk-go-backend
+
 - [ ] Checkout successful
 - [ ] Go setup complete
 - [ ] Snyk scan executed
@@ -284,6 +302,7 @@ Monitor each job during first run:
 - [ ] Results uploaded to Code Scanning
 
 #### react-unit-tests
+
 - [ ] Checkout successful
 - [ ] Node.js setup complete (version 16)
 - [ ] Dependencies installed
@@ -293,6 +312,7 @@ Monitor each job during first run:
 - [ ] Artifacts uploaded
 
 #### react-integration-tests
+
 - [ ] Checkout successful
 - [ ] Dependencies installed
 - [ ] E2E tests passed
@@ -300,6 +320,7 @@ Monitor each job during first run:
 - [ ] Artifacts uploaded
 
 #### react-coverage
+
 - [ ] Checkout successful
 - [ ] Coverage tests executed
 - [ ] HTML report generated
@@ -307,6 +328,7 @@ Monitor each job during first run:
 - [ ] Artifacts uploaded
 
 #### snyk-react-frontend
+
 - [ ] Checkout successful
 - [ ] Node.js setup complete
 - [ ] Dependencies installed
@@ -315,6 +337,7 @@ Monitor each job during first run:
 - [ ] Results uploaded to Code Scanning
 
 #### test-summary
+
 - [ ] All artifacts downloaded
 - [ ] Summary created
 - [ ] Visible in workflow summary
@@ -322,6 +345,7 @@ Monitor each job during first run:
 ## 🔍 Post-Deployment Verification
 
 ### 1. Check Workflow Status
+
 ```bash
 # Using GitHub CLI
 gh run list --workflow=snyk-security-and-tests.yml --limit 1
@@ -400,8 +424,10 @@ Your workflow is fully deployed when:
 ## 🐛 Troubleshooting Common Issues
 
 ### Issue 1: Workflow Not Triggering
+
 **Symptom**: No workflow appears in Actions tab  
 **Solution**:
+
 ```bash
 # Verify workflow file location
 ls .github/workflows/snyk-security-and-tests.yml
@@ -413,15 +439,19 @@ yamllint .github/workflows/snyk-security-and-tests.yml
 ```
 
 ### Issue 2: Snyk Token Error
+
 **Symptom**: "Missing Snyk token" error  
 **Solution**:
+
 1. Verify secret name is exactly `SNYK_TOKEN`
 2. Check secret value is correct
 3. Try regenerating token from Snyk dashboard
 
 ### Issue 3: Tests Fail in CI
+
 **Symptom**: Tests pass locally but fail in workflow  
 **Solution**:
+
 ```bash
 # Check versions match
 go version  # Should be 1.23.0
@@ -433,8 +463,10 @@ rm -rf ~/go/pkg/mod && go mod download
 ```
 
 ### Issue 4: Artifacts Not Uploading
+
 **Symptom**: No artifacts in workflow run  
 **Solution**:
+
 1. Check test execution logs
 2. Verify file paths in workflow
 3. Ensure tests generate coverage files
@@ -445,16 +477,19 @@ rm -rf ~/go/pkg/mod && go mod download
 If you encounter issues:
 
 1. **Check Documentation**:
+
    - Read `WORKFLOW_README.md`
    - Review `QUICK_REFERENCE.md`
    - Check `WORKFLOW_ARCHITECTURE.md`
 
 2. **Review Logs**:
+
    - Actions → Workflow run → Job logs
    - Look for red error messages
    - Check for warning indicators
 
 3. **Test Locally**:
+
    - Run all tests locally first
    - Verify Snyk authentication
    - Check dependency installations
