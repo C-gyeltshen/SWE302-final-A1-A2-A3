@@ -146,7 +146,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: snyk.sarif
+          sarif_file: golang-gin-realworld-example-app/snyk.sarif
 
   # Frontend - React Unit Tests
   react-unit-tests:
@@ -292,7 +292,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: snyk.sarif
+          sarif_file: react-redux-realworld-example-app/snyk.sarif
 
   # Combined Report
   test-summary:
