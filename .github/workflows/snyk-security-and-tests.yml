@@ -140,7 +140,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high --file=golang-gin-realworld-example-app/go.mod
+          args: --sarif-file-output=snyk.sarif --severity-threshold=high
 
       - name: Upload Snyk result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
@@ -163,7 +163,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "18"
           cache: "npm"
           cache-dependency-path: react-redux-realworld-example-app/package-lock.json
 
@@ -199,7 +199,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "18"
           cache: "npm"
           cache-dependency-path: react-redux-realworld-example-app/package-lock.json
 
@@ -236,7 +236,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "18"
           cache: "npm"
           cache-dependency-path: react-redux-realworld-example-app/package-lock.json
 
@@ -275,7 +275,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "18"
 
       - name: Install dependencies
         run: npm ci
@@ -286,7 +286,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high --file=react-redux-realworld-example-app/package.json
+          args: --sarif-file-output=snyk.sarif --severity-threshold=high
 
       - name: Upload Snyk result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
