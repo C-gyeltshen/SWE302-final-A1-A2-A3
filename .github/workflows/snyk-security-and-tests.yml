@@ -2,9 +2,9 @@ name: Snyk Security & Testing Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   workflow_dispatch:
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
     defaults:
       run:
         working-directory: ./golang-gin-realworld-example-app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23.0'
+          go-version: "1.23.0"
 
       - name: Cache Go modules
         uses: actions/cache@v4
@@ -75,7 +75,7 @@ jobs:
     defaults:
       run:
         working-directory: ./golang-gin-realworld-example-app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -83,7 +83,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23.0'
+          go-version: "1.23.0"
 
       - name: Cache Go modules
         uses: actions/cache@v4
@@ -121,7 +121,7 @@ jobs:
     defaults:
       run:
         working-directory: ./golang-gin-realworld-example-app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -129,7 +129,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23.0'
+          go-version: "1.23.0"
 
       - name: Download dependencies
         run: go mod download
@@ -155,7 +155,7 @@ jobs:
     defaults:
       run:
         working-directory: ./react-redux-realworld-example-app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -163,8 +163,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
-          cache: 'npm'
+          node-version: "16"
+          cache: "npm"
           cache-dependency-path: react-redux-realworld-example-app/package-lock.json
 
       - name: Install dependencies
@@ -191,7 +191,7 @@ jobs:
     defaults:
       run:
         working-directory: ./react-redux-realworld-example-app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -199,8 +199,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
-          cache: 'npm'
+          node-version: "16"
+          cache: "npm"
           cache-dependency-path: react-redux-realworld-example-app/package-lock.json
 
       - name: Install dependencies
@@ -228,7 +228,7 @@ jobs:
     defaults:
       run:
         working-directory: ./react-redux-realworld-example-app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -236,8 +236,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
-          cache: 'npm'
+          node-version: "16"
+          cache: "npm"
           cache-dependency-path: react-redux-realworld-example-app/package-lock.json
 
       - name: Install dependencies
@@ -267,7 +267,7 @@ jobs:
     defaults:
       run:
         working-directory: ./react-redux-realworld-example-app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -275,7 +275,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: "16"
 
       - name: Install dependencies
         run: npm ci
@@ -298,9 +298,16 @@ jobs:
   test-summary:
     name: Test Summary
     runs-on: ubuntu-latest
-    needs: [go-unit-tests, go-integration-tests, react-unit-tests, react-integration-tests, react-coverage]
+    needs:
+      [
+        go-unit-tests,
+        go-integration-tests,
+        react-unit-tests,
+        react-integration-tests,
+        react-coverage,
+      ]
     if: always()
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

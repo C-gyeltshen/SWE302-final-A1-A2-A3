@@ -8,14 +8,14 @@ This directory contains all the documentation you need to understand, deploy, an
 
 ### Main Files
 
-| File | Purpose | When to Read |
-|------|---------|--------------|
-| **snyk-security-and-tests.yml** | The actual workflow file | When modifying the workflow |
-| **DEPLOYMENT_CHECKLIST.md** | Step-by-step deployment guide | **START HERE** - Before deploying |
-| **SETUP_SUMMARY.md** | Complete setup overview | After reading checklist |
-| **WORKFLOW_README.md** | Comprehensive documentation | For detailed understanding |
-| **QUICK_REFERENCE.md** | Commands and troubleshooting | During daily use |
-| **WORKFLOW_ARCHITECTURE.md** | Visual diagrams and flows | For understanding structure |
+| File                            | Purpose                       | When to Read                      |
+| ------------------------------- | ----------------------------- | --------------------------------- |
+| **snyk-security-and-tests.yml** | The actual workflow file      | When modifying the workflow       |
+| **DEPLOYMENT_CHECKLIST.md**     | Step-by-step deployment guide | **START HERE** - Before deploying |
+| **SETUP_SUMMARY.md**            | Complete setup overview       | After reading checklist           |
+| **WORKFLOW_README.md**          | Comprehensive documentation   | For detailed understanding        |
+| **QUICK_REFERENCE.md**          | Commands and troubleshooting  | During daily use                  |
+| **WORKFLOW_ARCHITECTURE.md**    | Visual diagrams and flows     | For understanding structure       |
 
 ## 🚀 Quick Start Guide
 
@@ -43,24 +43,29 @@ This directory contains all the documentation you need to understand, deploy, an
 ## 📖 Documentation Details
 
 ### 1. DEPLOYMENT_CHECKLIST.md
+
 **Purpose**: Pre-deployment verification and step-by-step deployment guide
 
 **Contains**:
+
 - ✅ Pre-deployment checklist
 - 🚀 Deployment steps
 - 📊 First run verification
 - 🔍 Post-deployment verification
 - 🐛 Troubleshooting guide
 
-**Read this when**: 
+**Read this when**:
+
 - Setting up for the first time
 - Before deploying changes
 - Verifying successful deployment
 
 ### 2. SETUP_SUMMARY.md
+
 **Purpose**: Complete overview of what was created and how it works
 
 **Contains**:
+
 - What was created
 - Workflow features overview
 - Prerequisites checklist
@@ -69,14 +74,17 @@ This directory contains all the documentation you need to understand, deploy, an
 - Customization options
 
 **Read this when**:
+
 - Understanding the big picture
 - Explaining to others
 - Planning modifications
 
 ### 3. WORKFLOW_README.md
+
 **Purpose**: Comprehensive documentation of all workflow components
 
 **Contains**:
+
 - Overview of all jobs
 - Triggers and conditions
 - Artifacts generated
@@ -86,14 +94,17 @@ This directory contains all the documentation you need to understand, deploy, an
 - Best practices
 
 **Read this when**:
+
 - Need detailed information
 - Troubleshooting complex issues
 - Understanding specific features
 
 ### 4. QUICK_REFERENCE.md
+
 **Purpose**: Quick command reference for daily operations
 
 **Contains**:
+
 - Running workflows
 - Test commands (Go & React)
 - Snyk commands
@@ -103,15 +114,18 @@ This directory contains all the documentation you need to understand, deploy, an
 - Performance optimization
 
 **Read this when**:
+
 - Need a quick command
 - Running tests locally
 - Managing artifacts
 - Debugging issues
 
 ### 5. WORKFLOW_ARCHITECTURE.md
+
 **Purpose**: Visual representation of workflow structure
 
 **Contains**:
+
 - Execution flow diagrams
 - Job dependency charts
 - Data flow visualization
@@ -120,6 +134,7 @@ This directory contains all the documentation you need to understand, deploy, an
 - Time & resource optimization
 
 **Read this when**:
+
 - Understanding how jobs relate
 - Optimizing performance
 - Explaining to visual learners
@@ -130,6 +145,7 @@ This directory contains all the documentation you need to understand, deploy, an
 ### What It Does
 
 This workflow provides:
+
 - ✅ **Automated Testing**: Unit and integration tests for both backend and frontend
 - 🔒 **Security Scanning**: Snyk vulnerability detection
 - 📊 **Coverage Reports**: Detailed test coverage analysis
@@ -164,23 +180,28 @@ This workflow provides:
 ## 🔑 Key Features
 
 ### 1. Parallel Execution
+
 Jobs run in parallel when possible, reducing total execution time by 50-60%.
 
 ### 2. Smart Caching
+
 - Go modules cached
 - npm packages cached
 - Playwright browsers cached
 
 ### 3. Comprehensive Testing
+
 - **Backend**: Unit + Integration tests
 - **Frontend**: Unit + E2E + Coverage
 
 ### 4. Security First
+
 - Snyk scanning on every run
 - GitHub Code Scanning integration
 - Severity thresholds enforced
 
 ### 5. Detailed Reporting
+
 - Test reports
 - Coverage HTML
 - Security findings
@@ -198,6 +219,7 @@ Before using this workflow, ensure:
 ## 🛠️ Common Tasks
 
 ### Deploy the Workflow
+
 ```bash
 git add .github/workflows/
 git commit -m "Add CI/CD workflow"
@@ -205,6 +227,7 @@ git push origin main
 ```
 
 ### Run Tests Locally
+
 ```bash
 # Backend
 cd golang-gin-realworld-example-app
@@ -216,11 +239,13 @@ npm run test:playwright
 ```
 
 ### View Results
+
 1. Go to GitHub → Actions tab
 2. Click latest workflow run
 3. Download artifacts for reports
 
 ### Check Security
+
 1. Go to GitHub → Security tab
 2. Click "Code scanning"
 3. View Snyk findings
@@ -247,18 +272,21 @@ npm run test:playwright
 ### Common Customizations
 
 1. **Change trigger branches**
+
    ```yaml
    on:
      push:
-       branches: [ main, develop, staging ]
+       branches: [main, develop, staging]
    ```
 
 2. **Adjust Snyk severity**
+
    ```yaml
    args: --severity-threshold=medium
    ```
 
 3. **Add notifications**
+
    ```yaml
    - uses: 8398a7/action-slack@v3
    ```
@@ -274,12 +302,12 @@ See `WORKFLOW_README.md` for more customization options.
 
 ### Quick Fixes
 
-| Issue | Solution |
-|-------|----------|
+| Issue                   | Solution                                     |
+| ----------------------- | -------------------------------------------- |
 | Workflow not triggering | Check workflow file location and YAML syntax |
-| Snyk token error | Verify secret name is `SNYK_TOKEN` |
-| Tests fail in CI | Check versions match local environment |
-| Artifacts not uploading | Verify test execution and file paths |
+| Snyk token error        | Verify secret name is `SNYK_TOKEN`           |
+| Tests fail in CI        | Check versions match local environment       |
+| Artifacts not uploading | Verify test execution and file paths         |
 
 For detailed troubleshooting, see `QUICK_REFERENCE.md`.
 
@@ -332,19 +360,20 @@ You're successful when:
 
 ## 📝 Document Versions
 
-| Document | Version | Last Updated |
-|----------|---------|--------------|
-| INDEX.md | 1.0.0 | Nov 10, 2025 |
-| DEPLOYMENT_CHECKLIST.md | 1.0.0 | Nov 10, 2025 |
-| SETUP_SUMMARY.md | 1.0.0 | Nov 10, 2025 |
-| WORKFLOW_README.md | 1.0.0 | Nov 10, 2025 |
-| QUICK_REFERENCE.md | 1.0.0 | Nov 10, 2025 |
-| WORKFLOW_ARCHITECTURE.md | 1.0.0 | Nov 10, 2025 |
-| snyk-security-and-tests.yml | 1.0.0 | Nov 10, 2025 |
+| Document                    | Version | Last Updated |
+| --------------------------- | ------- | ------------ |
+| INDEX.md                    | 1.0.0   | Nov 10, 2025 |
+| DEPLOYMENT_CHECKLIST.md     | 1.0.0   | Nov 10, 2025 |
+| SETUP_SUMMARY.md            | 1.0.0   | Nov 10, 2025 |
+| WORKFLOW_README.md          | 1.0.0   | Nov 10, 2025 |
+| QUICK_REFERENCE.md          | 1.0.0   | Nov 10, 2025 |
+| WORKFLOW_ARCHITECTURE.md    | 1.0.0   | Nov 10, 2025 |
+| snyk-security-and-tests.yml | 1.0.0   | Nov 10, 2025 |
 
 ## 🗺️ Reading Path
 
 ### Path 1: Quick Start (15 minutes)
+
 ```
 1. INDEX.md (you are here)
 2. DEPLOYMENT_CHECKLIST.md
@@ -353,6 +382,7 @@ You're successful when:
 ```
 
 ### Path 2: Comprehensive Understanding (45 minutes)
+
 ```
 1. INDEX.md (you are here)
 2. SETUP_SUMMARY.md
@@ -364,6 +394,7 @@ You're successful when:
 ```
 
 ### Path 3: Modification Planning (60 minutes)
+
 ```
 1. INDEX.md (you are here)
 2. WORKFLOW_ARCHITECTURE.md

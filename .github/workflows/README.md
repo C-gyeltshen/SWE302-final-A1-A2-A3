@@ -20,6 +20,7 @@ I've created a **comprehensive GitHub Actions workflow** with **complete documen
 ## 🎯 What This Workflow Does
 
 ### For Your Go Backend (`golang-gin-realworld-example-app`)
+
 - ✅ Runs **unit tests** (users, articles, common modules)
 - ✅ Runs **integration tests** (full test suite)
 - ✅ Generates **coverage reports**
@@ -27,6 +28,7 @@ I've created a **comprehensive GitHub Actions workflow** with **complete documen
 - 📊 Uploads **test artifacts**
 
 ### For Your React Frontend (`react-redux-realworld-example-app`)
+
 - ✅ Runs **Playwright unit tests** (reducer tests)
 - ✅ Runs **Playwright E2E tests** (component tests)
 - ✅ Generates **comprehensive coverage** with NYC
@@ -34,6 +36,7 @@ I've created a **comprehensive GitHub Actions workflow** with **complete documen
 - 📊 Uploads **test reports and coverage**
 
 ### Security & Reporting
+
 - 🔒 **GitHub Code Scanning** integration
 - 📈 **Automated test summaries**
 - 📦 **30-day artifact retention**
@@ -134,23 +137,27 @@ TRIGGER (Push/PR to main or develop)
 ## ✨ Key Features
 
 ### 1. **Parallel Execution**
+
 - Jobs run simultaneously
 - **50-60% faster** than sequential execution
 - Total time: **12-18 minutes** (vs 25+ minutes sequential)
 
 ### 2. **Smart Caching**
+
 - Go modules cached (`~/.cache/go-build`)
 - npm packages cached
 - Playwright browsers cached
 - **Saves 5-10 minutes per run**
 
 ### 3. **Comprehensive Testing**
+
 - **8 jobs total**
 - **Backend**: Unit + Integration
 - **Frontend**: Unit + E2E + Coverage
 - **Security**: Snyk scanning for both
 
 ### 4. **Rich Artifacts**
+
 - Go unit coverage reports
 - Go integration coverage HTML
 - React Playwright test reports
@@ -158,6 +165,7 @@ TRIGGER (Push/PR to main or develop)
 - **All downloadable for 30 days**
 
 ### 5. **Security First**
+
 - Snyk scans on every run
 - GitHub Code Scanning integration
 - Severity threshold: HIGH
@@ -181,6 +189,7 @@ Total: 12-18 minutes ⚡
 ```
 
 ### Artifacts Generated:
+
 1. `go-unit-coverage` - Go unit test coverage
 2. `go-integration-coverage` - Go integration coverage + HTML
 3. `react-unit-test-report` - Playwright unit test report
@@ -190,17 +199,20 @@ Total: 12-18 minutes ⚡
 ## 🔍 Viewing Results
 
 ### Test Results
+
 ```
 GitHub → Actions → [Workflow Run] → [Job] → Logs
 ```
 
 ### Coverage Reports
+
 ```
 GitHub → Actions → [Workflow Run] → Artifacts → Download
 Then open: coverage/index.html (React) or integration_coverage.html (Go)
 ```
 
 ### Security Findings
+
 ```
 GitHub → Security → Code scanning → Filter by Snyk
 ```
@@ -223,17 +235,19 @@ GitHub → Security → Code scanning → Filter by Snyk
 ✅ **Comprehensive tests** - Unit + Integration + E2E  
 ✅ **Coverage tracking** - Monitor test quality  
 ✅ **GitHub integration** - Code scanning, summaries  
-✅ **Continue on error** - Security scans won't block  
+✅ **Continue on error** - Security scans won't block
 
 ## 🚨 Important Notes
 
 ### Prerequisites
+
 - ✅ Snyk authenticated locally
 - ✅ Projects added to Snyk
 - ⚠️ **REQUIRED**: `SNYK_TOKEN` in GitHub secrets
 - ✅ All local tests passing
 
 ### Before Pushing
+
 - [ ] Verify `SNYK_TOKEN` is in GitHub secrets
 - [ ] Run tests locally to ensure they pass
 - [ ] Review workflow file for any customizations
@@ -242,16 +256,19 @@ GitHub → Security → Code scanning → Filter by Snyk
 ## 📞 Troubleshooting
 
 ### Workflow not appearing?
+
 - Check file is at: `.github/workflows/snyk-security-and-tests.yml`
 - Verify YAML syntax is correct
 - Push must be to `main` or `develop` branch
 
 ### Snyk token error?
+
 - Verify secret name is exactly `SNYK_TOKEN`
 - Check token hasn't expired
 - Regenerate token if needed
 
 ### Tests failing in CI?
+
 - Run tests locally first
 - Check versions (Go 1.23.0, Node 16)
 - Review job logs for specific errors
@@ -261,18 +278,21 @@ GitHub → Security → Code scanning → Filter by Snyk
 ## 📈 Next Steps After Deployment
 
 ### Day 1
+
 - ✅ Push workflow to GitHub
 - ✅ Verify first run completes successfully
 - ✅ Download and review artifacts
 - ✅ Check security findings
 
 ### Week 1
+
 - Monitor daily runs
 - Fix any failing tests
 - Review security vulnerabilities
 - Familiarize team with workflow
 
 ### Month 1
+
 - Analyze coverage trends
 - Optimize slow tests
 - Update dependencies
@@ -302,23 +322,23 @@ Then visit: **https://github.com/C-gyeltshen/SWE302-final-A1-A2-A3/actions**
 
 ## 📚 Full Documentation Index
 
-| Document | Lines | Purpose |
-|----------|-------|---------|
-| **INDEX.md** | 396 | Navigation and overview |
-| **DEPLOYMENT_CHECKLIST.md** | 489 | Step-by-step deployment |
-| **SETUP_SUMMARY.md** | 345 | What was created |
-| **WORKFLOW_README.md** | 258 | Comprehensive docs |
-| **QUICK_REFERENCE.md** | 335 | Daily commands |
-| **WORKFLOW_ARCHITECTURE.md** | 345 | Visual diagrams |
-| **snyk-security-and-tests.yml** | 328 | The workflow itself |
-| **Total** | **2,496 lines** | Complete documentation |
+| Document                        | Lines           | Purpose                 |
+| ------------------------------- | --------------- | ----------------------- |
+| **INDEX.md**                    | 396             | Navigation and overview |
+| **DEPLOYMENT_CHECKLIST.md**     | 489             | Step-by-step deployment |
+| **SETUP_SUMMARY.md**            | 345             | What was created        |
+| **WORKFLOW_README.md**          | 258             | Comprehensive docs      |
+| **QUICK_REFERENCE.md**          | 335             | Daily commands          |
+| **WORKFLOW_ARCHITECTURE.md**    | 345             | Visual diagrams         |
+| **snyk-security-and-tests.yml** | 328             | The workflow itself     |
+| **Total**                       | **2,496 lines** | Complete documentation  |
 
 ---
 
 **Created**: November 10, 2025  
 **Project**: SWE302-final-A1-A2-A3  
 **Repository**: C-gyeltshen/SWE302-final-A1-A2-A3  
-**Status**: ✅ READY TO DEPLOY  
+**Status**: ✅ READY TO DEPLOY
 
 **Questions?** Start with `INDEX.md` 📖
 
