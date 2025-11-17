@@ -1,9 +1,7 @@
 # Assignment 2: Static & Dynamic Application Security Testing (SAST & DAST)
-
 ## Overview
 In this assignment, you will perform security testing on the RealWorld Conduit application using both Static Application Security Testing (SAST) and Dynamic Application Security Testing (DAST) tools. You'll learn to identify, analyze, and remediate security vulnerabilities.
 
-## Learning Objectives
 - Understand the difference between SAST and DAST
 - Use industry-standard security testing tools (Snyk, SonarQube, OWASP ZAP)
 - Identify common security vulnerabilities (OWASP Top 10)
