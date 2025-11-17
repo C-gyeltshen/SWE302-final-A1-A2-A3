@@ -83,10 +83,13 @@ snyk monitor
 
 - #### `Security Scan Results (After Fixes)`
 
-snlknslflskflksldfksdfkskldfn
+    After updating the vulnerable dependencies, a follow-up Snyk scan confirmed that all previously identified vulnerabilities have been resolved.
 
+    Total dependencies tested: 67 | Vulnerable paths: 0
 
+    ![16](image/16.png)
 
+    ![17](image/17.png)
 
 
 ### 1.3 Frontend Security Scan (React)
@@ -129,6 +132,13 @@ snyk monitor
 
 - #### `Security Scan Results (After Fixes)`
 
+    After updating the vulnerable dependencies, a follow-up Snyk scan confirmed that all previously identified vulnerabilities have been resolved.
+
+    Total dependencies tested: 59 | Vulnerable paths: 0
+
+    ![16](image/16.png)
+
+    ![18](image/18.png)
 
 
 
