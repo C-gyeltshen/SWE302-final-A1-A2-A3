@@ -233,8 +233,44 @@ go run hello.go
 
 # Terminal 2: Frontend
 cd react-redux-realworld-example-app
-npm start
 ```
+#### 3.3 Passive Scan with OWASP ZAP
+
+```bash
+# Set the target in ZAP context
+docker run --rm -v $(pwd):/zap/wrk/:rw -t zaproxy/zap-stable zap-baseline.sh -t http://localhost:4100 -r passive-report.html
+```
+
+  ![23](image/23.png)
+
+#### ZAP Baseline Scan Summary
+
+| Category | Count | Notes |
+|----------|-------|--------|
+| **PASS** | 56 | No issues found for these checks |
+| **WARN-NEW** | 11 | Missing headers, CSP issues, server info leaks, caching issues |
+| **FAIL-NEW** | 0 | No high-severity vulnerabilities detected |
+| **INFO** | 0 | No informational alerts |
+| **URLs Scanned** | 7 | Application crawled successfully |
+| **Report File** | `passive-report.html` | Saved in current directory |
+
+
+| Warning | Meaning |
+|--------|---------|
+| Missing Anti-clickjacking Header | Add `X-Frame-Options` |
+| X-Content-Type-Options Missing | Add `nosniff` header |
+| Server Leaks X-Powered-By | Hide technology stack |
+| Content Security Policy Missing | Add CSP header |
+| Storable & Cacheable Content | Add `Cache-Control` |
+| Suspicious Comments | Remove TODO/DEBUG comments |
+| Permissions-Policy Missing | Add Permissions-Policy |
+| SRI Missing | Add integrity attributes |
+| Spectre Isolation Weak | Browser-level notice |
+| Modern Web App Detected | SPA behavior detected |
+
+
+
+
 
 
 
