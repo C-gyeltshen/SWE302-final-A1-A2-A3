@@ -7,6 +7,11 @@ on:
     branches: [main, develop]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 jobs:
   # Backend - Go Unit Tests
   go-unit-tests:
@@ -152,13 +157,15 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --sarif-file-output=snyk.sarif --severity-threshold=high
+          args: --sarif-file-output=snyk-go.sarif --severity-threshold=high
 
       - name: Upload Snyk result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
+        continue-on-error: true
         with:
-          sarif_file: snyk.sarif
+          sarif_file: golang-gin-realworld-example-app/snyk-go.sarif
+          category: snyk-go-backend
 
   # Frontend - React Unit Tests
   react-unit-tests:
@@ -314,13 +321,15 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --sarif-file-output=snyk.sarif --severity-threshold=high
+          args: --sarif-file-output=snyk-react.sarif --severity-threshold=high
 
       - name: Upload Snyk result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
+        continue-on-error: true
         with:
-          sarif_file: snyk.sarif
+          sarif_file: react-redux-realworld-example-app/snyk-react.sarif
+          category: snyk-react-frontend
 
   # Combined Report
   test-summary:
