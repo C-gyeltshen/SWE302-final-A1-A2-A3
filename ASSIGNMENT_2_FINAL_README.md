@@ -268,9 +268,9 @@ docker run --rm -v $(pwd):/zap/wrk/:rw -t zaproxy/zap-stable zap-baseline.sh -t 
 | Spectre Isolation Weak | Browser-level notice |
 | Modern Web App Detected | SPA behavior detected |
 
+#### 3.4 Active Scan with OWASP ZAP
 
-
-
+```bash
 
 
 
