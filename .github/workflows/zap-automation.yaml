@@ -43,6 +43,10 @@ jobs:
         working-directory: ./react-redux-realworld-example-app
         run: npm ci
 
+      - name: Build frontend
+        working-directory: ./react-redux-realworld-example-app
+        run: npm run build
+
       - name: Start backend server
         working-directory: ./golang-gin-realworld-example-app
         run: |
@@ -53,7 +57,7 @@ jobs:
       - name: Start frontend server
         working-directory: ./react-redux-realworld-example-app
         run: |
-          npm start &
+          PORT=4100 node server.js &
           sleep 10
 
       - name: Create ZAP automation plan

@@ -19,6 +19,7 @@
     "redux-mock-store": "^1.5.4"
   },
   "dependencies": {
+    "express": "^4.18.2",
     "history": "^4.6.3",
     "marked": "^4.0.10",
     "prop-types": "^15.5.10",
@@ -35,7 +36,8 @@
     "superagent-promise": "^1.1.0"
   },
   "scripts": {
-    "start": "cross-env PORT=4100 react-scripts start",
+    "start:dev": "cross-env PORT=4100 react-scripts start",
+    "start": "npm run build && node server.js",
     "build": "react-scripts build",
     "test": "cross-env PORT=4100 react-scripts test --env=jsdom",
     "test:playwright": "playwright test",
