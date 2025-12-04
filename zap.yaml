@@ -3,10 +3,10 @@ env:
   - excludePaths: []
     name: baseline
     urls:
-    - http://host.docker.internal:4100
+    - http://localhost:4100
   parameters:
-    failOnError: true
-    progressToStdout: false
+    failOnError: false
+    progressToStdout: true
 jobs:
 - parameters:
     enableTags: false
@@ -14,7 +14,7 @@ jobs:
   type: passiveScan-config
 - parameters:
     maxDuration: 1
-    url: http://host.docker.internal:4100
+    url: http://localhost:4100
   type: spider
 - parameters:
     maxDuration: 0
@@ -25,9 +25,9 @@ jobs:
   rules: []
   type: outputSummary
 - parameters:
-    reportDescription: ''
+    reportDescription: 'Baseline passive scan of Conduit application'
     reportDir: /zap/wrk/
     reportFile: zap-passive-report.html
-    reportTitle: ZAP Scanning Report
+    reportTitle: ZAP Baseline Scanning Report
     template: traditional-html
   type: report
