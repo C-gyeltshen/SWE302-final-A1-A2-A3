@@ -61,7 +61,7 @@ jobs:
           cmd_options: "-a"
           allow_issue_writing: false
           fail_action: false
-          artifact_name: zapscanreports
+          artifact_name: zap-scan-reports
 
       - name: Upload ZAP report
         uses: actions/upload-artifact@v4
