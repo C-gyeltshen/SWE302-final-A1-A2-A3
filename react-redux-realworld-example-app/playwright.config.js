@@ -26,7 +26,7 @@ module.exports = defineConfig({
   ],
 
   webServer: {
-    command: "BABEL_ENV=test npm start",
+    command: "npm run start:dev",
     url: "http://localhost:4100",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
