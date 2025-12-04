@@ -61,6 +61,7 @@ jobs:
           cmd_options: "-a"
           allow_issue_writing: false
           fail_action: false
+          artifact_name: zapscanreports
 
       - name: Upload ZAP report
         uses: actions/upload-artifact@v4
@@ -68,6 +69,7 @@ jobs:
         with:
           name: zap-scan-reports
           path: |
-            active-scan-report.html
-            zap-passive-report.html
+            report_html.html
+            report_md.md
+            report_json.json
           retention-days: 30

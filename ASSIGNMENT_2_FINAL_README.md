@@ -243,6 +243,8 @@ docker run --rm -v $(pwd):/zap/wrk/:rw -t zaproxy/zap-stable zap-baseline.sh -t 
 
   ![23](image/23.png)
 
+  ![24](image/24.png)
+
 #### ZAP Baseline Scan Summary
 
 | Category | Count | Notes |
@@ -271,6 +273,7 @@ docker run --rm -v $(pwd):/zap/wrk/:rw -t zaproxy/zap-stable zap-baseline.sh -t 
 #### 3.4 Active Scan with OWASP ZAP
 
 ```bash
+
 
 
 
