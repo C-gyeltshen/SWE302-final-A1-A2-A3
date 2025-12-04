@@ -32,13 +32,13 @@
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-logger": "^3.0.1",
-    "superagent": "^10.2.2",
+    "superagent": "^3.8.3",
     "superagent-promise": "^1.1.0"
   },
   "scripts": {
     "start:dev": "cross-env PORT=4100 react-scripts start",
     "start": "npm run build && node server.js",
-    "build": "react-scripts build",
+    "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "test": "cross-env PORT=4100 react-scripts test --env=jsdom",
     "test:playwright": "playwright test",
     "test:playwright:unit": "playwright test test/reducers",
