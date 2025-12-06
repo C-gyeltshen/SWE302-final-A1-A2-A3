@@ -476,4 +476,3 @@ go build -o realworld-server
 
 ---
 
-**Note:** Replace placeholder values (XX, XXXX, etc.) with actual results from your testing and scanning activities.
